@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PORTFOLIO — Creative Works</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+JP:wght@300;400;500&family=Space+Mono&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fafaf8;
+      --surface: #f2f2ef;
+      --surface2: #e8e8e4;
+      --text: #0d0d0d;
+      --muted: #999;
+      --muted2: #ccc;
+      --border: #e0e0da;
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body: 'Noto Sans JP', sans-serif;
+      --font-mono: 'Space Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-weight: 300;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ─── HEADER ─── */
+    .site-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.4rem 3rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(250,250,248,0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .site-logo {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      letter-spacing: 0.3em;
+      color: var(--text);
+    }
+
+    .site-nav {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .site-nav a {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      transition: color 0.25s;
+    }
+
+    .site-nav a:hover { color: var(--text); }
+
+    /* ─── HERO ─── */
+    .hero {
+      padding: 7rem 3rem 5rem;
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 5rem;
+      align-items: end;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(3.5rem, 7vw, 7rem);
+      line-height: 0.88;
+      letter-spacing: 0.06em;
+    }
+
+    .hero-desc {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 2.1;
+      padding-bottom: 0.5rem;
+    }
+
+    .hero-desc-item {
+      display: block;
+      color: #888;
+      margin-top: 1.5rem;
+      font-size: 0.78rem;
+      letter-spacing: 0.05em;
+    }
+
+    /* ─── WORKS HEADER ─── */
+    .works-header {
+      padding: 1.25rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .works-count {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.15em;
+    }
+
+    .filter-tags {
+      display: flex;
+      gap: 0.6rem;
+    }
+
+    .filter-tag {
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border: 1px solid var(--muted2);
+      padding: 0.3rem 0.85rem;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-tag:hover { color: var(--text); border-color: #666; }
+    .filter-tag.active { color: var(--text); border-color: #777; }
+
+    /* ─── WORKS GRID ─── */
+    .works-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--border);
+    }
+
+    .work-card {
+      background: var(--bg);
+      cursor: pointer;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+
+    .work-card:hover { background: var(--surface); }
+
+    .work-thumb {
+      width: 100%;
+      aspect-ratio: 16/10;
+      background: var(--surface2);
+      position: relative;
+      overflow: hidden;
+      transition: opacity 0.3s;
+    }
+
+    .work-thumb::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 48px,
+          rgba(0,0,0,0.04) 48px,
+          rgba(0,0,0,0.04) 49px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 48px,
+          rgba(0,0,0,0.04) 48px,
+          rgba(0,0,0,0.04) 49px
+        );
+      z-index: 0;
+    }
+
+    .work-thumb-num {
+      position: absolute;
+      bottom: 1.25rem;
+      right: 1.5rem;
+      font-family: var(--font-display);
+      font-size: 6rem;
+      line-height: 1;
+      color: rgba(0,0,0,0.06);
+      letter-spacing: 0.05em;
+      pointer-events: none;
+      user-select: none;
+      z-index: 1;
+      transition: color 0.3s;
+    }
+
+    .work-card:hover .work-thumb-num {
+      color: rgba(0,0,0,0.12);
+    }
+
+    .work-thumb-label {
+      position: absolute;
+      top: 1.25rem;
+      left: 1.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      color: rgba(0,0,0,0.2);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      z-index: 2;
+    }
+
+    /* Hover overlay */
+    .work-thumb-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.03);
+      opacity: 0;
+      transition: opacity 0.3s;
+      z-index: 3;
+    }
+
+    .work-card:hover .work-thumb-overlay { opacity: 1; }
+
+    .work-meta {
+      padding: 1.25rem 1.75rem 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .work-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .work-number {
+      font-family: var(--font-mono);
+      font-size: 0.63rem;
+      color: var(--muted);
+      letter-spacing: 0.12em;
+    }
+
+    .work-tags-row {
+      display: flex;
+      gap: 0.4rem;
+    }
+
+    .work-tag {
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .work-tag + .work-tag::before {
+      content: '/ ';
+      margin-right: 0.4rem;
+    }
+
+    .work-title {
+      font-size: 0.95rem;
+      font-weight: 400;
+      color: var(--text);
+      letter-spacing: 0.02em;
+      line-height: 1.45;
+    }
+
+    .work-footer-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 0.25rem;
+    }
+
+    .work-date {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+    }
+
+    .work-arrow {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--muted);
+      opacity: 0;
+      transform: translateX(-6px);
+      transition: all 0.25s;
+    }
+
+    .work-card:hover .work-arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* ─── PAGINATION ─── */
+    .pagination {
+      padding: 2.5rem 3rem;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .page-btn {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      width: 2.6rem;
+      height: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid transparent;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+      letter-spacing: 0.05em;
+    }
+
+    .page-btn:hover { border-color: var(--border); color: var(--text); }
+    .page-btn.active { border-color: #555; color: var(--text); }
+
+    .page-sep {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--muted);
+      padding: 0 0.25rem;
+    }
+
+    /* ─── FOOTER ─── */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      padding: 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-logo {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      letter-spacing: 0.3em;
+      color: var(--text);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--text); }
+
+    .footer-copy {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      .site-header { padding: 1.25rem 1.75rem; }
+      .hero {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+        padding: 4rem 1.75rem 3rem;
+      }
+      .works-header { padding: 1.25rem 1.75rem; }
+      .filter-tags { display: none; }
+      .works-grid { grid-template-columns: 1fr; }
+      .pagination { padding: 2rem 1.75rem; }
+      .site-footer {
+        flex-direction: column;
+        gap: 2rem;
+        padding: 2.5rem 1.75rem;
+        text-align: center;
+      }
+      .footer-links { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="site-logo">PORTFOLIO</div>
+    <nav>
+      <ul class="site-nav">
+        <li><a href="#">About</a></li>
+        <li><a href="#">Works</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div>
+      <p class="hero-eyebrow">Creative Works Archive</p>
+      <h1 class="hero-title">SAMPLE<br>PORTFOLIO</h1>
+    </div>
+    <div class="hero-desc">
+      サンプルのポートフォリオサイトです。クリエイターが表現力を高めるために制作した作品を掲載しています。
+      <span class="hero-desc-item">
+        Produced by creators<br>
+        who love making things.<br><br>
+        Updated regularly<br>
+        until reaching 100 works.
+      </span>
+    </div>
+  </section>
+
+  <!-- WORKS HEADER -->
+  <div class="works-header">
+    <div class="works-count">WORKS — 012</div>
+    <div class="filter-tags">
+      <div class="filter-tag active">All</div>
+      <div class="filter-tag">CSS</div>
+      <div class="filter-tag">JavaScript</div>
+      <div class="filter-tag">WebGL</div>
+      <div class="filter-tag">Graphic</div>
+      <div class="filter-tag">Motion</div>
+    </div>
+  </div>
+
+  <!-- WORKS GRID -->
+  <main class="works-grid" id="works"></main>
+
+  <!-- PAGINATION -->
+  <div class="pagination">
+    <div class="page-btn active">01</div>
+    <div class="page-btn">02</div>
+    <div class="page-btn">03</div>
+    <span class="page-sep">…</span>
+    <div class="page-btn">05</div>
+    <div class="page-btn">→</div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-logo">PORTFOLIO</div>
+    <ul class="footer-links">
+      <li><a href="#">Corporate Site</a></li>
+      <li><a href="#">Instagram</a></li>
+      <li><a href="#">X / Twitter</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+    <div class="footer-copy">© 2024 Your Name</div>
+  </footer>
+
+  <script>
+    const works = [
+      { num: '001', tags: ['CSS', 'Animation'], title: 'Particle Flow System', date: '2024.12' },
+      { num: '002', tags: ['JavaScript', 'WebGL'], title: 'Interactive 3D Sphere', date: '2024.11' },
+      { num: '003', tags: ['Graphic'], title: 'Brand Identity Design', date: '2024.11' },
+      { num: '004', tags: ['CSS', 'JavaScript'], title: 'Scroll Animation Gallery', date: '2024.10' },
+      { num: '005', tags: ['WebGL', 'GLSL'], title: 'Shader Experiment vol.1', date: '2024.10' },
+      { num: '006', tags: ['Motion'], title: 'Logo Animation Reel', date: '2024.09' },
+      { num: '007', tags: ['UI', 'JavaScript'], title: 'Custom Cursor Experience', date: '2024.09' },
+      { num: '008', tags: ['Graphic'], title: 'Typography Poster Series', date: '2024.08' },
+      { num: '009', tags: ['CSS'], title: 'Liquid Morphing Shapes', date: '2024.08' },
+      { num: '010', tags: ['p5.js'], title: 'Generative Art System', date: '2024.07' },
+      { num: '011', tags: ['JavaScript'], title: 'Audio Visualizer', date: '2024.07' },
+      { num: '012', tags: ['WebGL', 'GLSL'], title: 'Fragment Shader Study', date: '2024.06' },
+    ];
+
+    const grid = document.getElementById('works');
+
+    works.forEach(work => {
+      const card = document.createElement('article');
+      card.className = 'work-card';
+      card.innerHTML = `
+        <div class="work-thumb">
+          <span class="work-thumb-label">Sample Image</span>
+          <div class="work-thumb-num">${work.num}</div>
+          <div class="work-thumb-overlay"></div>
+        </div>
+        <div class="work-meta">
+          <div class="work-top">
+            <span class="work-number">${work.num}</span>
+            <div class="work-tags-row">
+              ${work.tags.map(t => `<span class="work-tag">${t}</span>`).join('')}
+            </div>
+          </div>
+          <div class="work-title">${work.title}</div>
+          <div class="work-footer-row">
+            <span class="work-date">${work.date}</span>
+            <span class="work-arrow">View →</span>
+          </div>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+
+    // Filter tags (visual only)
+    document.querySelectorAll('.filter-tag').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-tag').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+  </script>
+
+</body>
+</html>
