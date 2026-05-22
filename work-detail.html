@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>作品タイトル — PORTFOLIO</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+JP:wght@300;400;500&family=Space+Mono&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fafaf8;
+      --surface: #f2f2ef;
+      --surface2: #e8e8e4;
+      --text: #0d0d0d;
+      --muted: #999;
+      --muted2: #ccc;
+      --border: #e0e0da;
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body: 'Noto Sans JP', sans-serif;
+      --font-mono: 'Space Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-weight: 300;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ─── HEADER ─── */
+    .site-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.4rem 3rem;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(250,250,248,0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .site-logo {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      letter-spacing: 0.3em;
+      color: var(--text);
+    }
+
+    .site-nav {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .site-nav a {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      transition: color 0.25s;
+    }
+
+    .site-nav a:hover { color: var(--text); }
+
+    /* ─── MAIN LAYOUT ─── */
+    .page-wrapper {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      min-height: 100vh;
+      padding-top: 64px; /* header height */
+    }
+
+    /* ─── LEFT SIDEBAR ─── */
+    .sidebar {
+      position: sticky;
+      top: 64px;
+      height: calc(100vh - 64px);
+      overflow-y: auto;
+      padding: 3rem 2.5rem 3rem 3rem;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover { color: var(--text); }
+
+    .back-arrow {
+      font-size: 0.75rem;
+      transition: transform 0.2s;
+    }
+
+    .back-link:hover .back-arrow { transform: translateX(-3px); }
+
+    .work-title {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      line-height: 1;
+      letter-spacing: 0.06em;
+    }
+
+    .meta-block {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .meta-row {
+      display: flex;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      line-height: 1.6;
+    }
+
+    .meta-label {
+      color: var(--muted);
+      min-width: 3rem;
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      padding-top: 0.08rem;
+    }
+
+    .meta-value {
+      color: var(--text);
+      font-size: 0.78rem;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .tag {
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border: 1px solid var(--muted2);
+      padding: 0.25rem 0.7rem;
+      border-radius: 999px;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+    }
+
+    .work-desc {
+      font-size: 0.8rem;
+      color: #555;
+      line-height: 2;
+    }
+
+    .work-desc p + p {
+      margin-top: 1rem;
+    }
+
+    /* ─── RIGHT CONTENT ─── */
+    .content-area {
+      padding: 3rem 3rem 6rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      background: var(--border);
+    }
+
+    .work-image {
+      width: 100%;
+      background: var(--surface2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .work-image.tall { aspect-ratio: 4/3; }
+    .work-image.wide { aspect-ratio: 16/7; }
+    .work-image.square { aspect-ratio: 1/1; }
+
+    /* Subtle grid pattern placeholder */
+    .work-image::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 48px,
+          rgba(0,0,0,0.04) 48px,
+          rgba(0,0,0,0.04) 49px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 48px,
+          rgba(0,0,0,0.04) 48px,
+          rgba(0,0,0,0.04) 49px
+        );
+    }
+
+    .image-label {
+      position: absolute;
+      bottom: 1rem;
+      right: 1.25rem;
+      font-family: var(--font-mono);
+      font-size: 0.58rem;
+      color: rgba(0,0,0,0.2);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    /* 2カラム画像グリッド */
+    .image-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+    }
+
+    /* ─── PREV / NEXT ─── */
+    .work-nav {
+      background: var(--bg);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-top: 1px solid var(--border);
+    }
+
+    .work-nav-item {
+      padding: 2rem 3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      cursor: pointer;
+      transition: background 0.25s;
+    }
+
+    .work-nav-item:hover { background: var(--surface); }
+
+    .work-nav-item + .work-nav-item {
+      border-left: 1px solid var(--border);
+      align-items: flex-end;
+      text-align: right;
+    }
+
+    .nav-label {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .nav-title {
+      font-size: 0.88rem;
+      color: var(--text);
+      font-weight: 400;
+    }
+
+    .nav-arrow {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 860px) {
+      .site-header { padding: 1.25rem 1.5rem; }
+
+      .page-wrapper {
+        grid-template-columns: 1fr;
+        padding-top: 56px;
+      }
+
+      .sidebar {
+        position: static;
+        height: auto;
+        padding: 2rem 1.5rem;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .content-area { padding: 0 0 4rem; }
+
+      .work-nav { grid-template-columns: 1fr; }
+      .work-nav-item + .work-nav-item {
+        border-left: none;
+        border-top: 1px solid var(--border);
+        align-items: flex-start;
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <a href="portfolio.html" class="site-logo">PORTFOLIO</a>
+    <nav>
+      <ul class="site-nav">
+        <li><a href="#">About</a></li>
+        <li><a href="portfolio.html">Works</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- MAIN -->
+  <div class="page-wrapper">
+
+    <!-- LEFT: 固定サイドバー -->
+    <aside class="sidebar">
+
+      <a href="portfolio.html" class="back-link">
+        <span class="back-arrow">←</span> Works
+      </a>
+
+      <h1 class="work-title">作品タイトル<br>サンプル</h1>
+
+      <div class="tag-row">
+        <span class="tag">Graphic</span>
+        <span class="tag">Branding</span>
+        <span class="tag">Artwork</span>
+      </div>
+
+      <hr class="divider">
+
+      <div class="meta-block">
+        <div class="meta-row">
+          <span class="meta-label">Year</span>
+          <span class="meta-value">2025</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-label">AD+D</span>
+          <span class="meta-value">Your Name</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-label">CL</span>
+          <span class="meta-value">クライアント名</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-label">PH</span>
+          <span class="meta-value">フォトグラファー名</span>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <div class="work-desc">
+        <p>ここに作品の説明文を入れてください。プロジェクトのコンセプトや制作背景などを記述します。</p>
+        <p>2〜3段落程度が読みやすいです。クライアントへの想いや、デザインの意図なども書くと良いでしょう。</p>
+      </div>
+
+    </aside>
+
+    <!-- RIGHT: 画像エリア -->
+    <div>
+      <div class="content-area">
+
+        <!-- メイン画像（大） -->
+        <div class="work-image tall">
+          <span class="image-label">Image 01</span>
+        </div>
+
+        <!-- 2カラム画像 -->
+        <div class="image-grid">
+          <div class="work-image tall">
+            <span class="image-label">Image 02</span>
+          </div>
+          <div class="work-image tall">
+            <span class="image-label">Image 03</span>
+          </div>
+        </div>
+
+        <!-- ワイド画像 -->
+        <div class="work-image wide">
+          <span class="image-label">Image 04</span>
+        </div>
+
+        <!-- 2カラム画像 -->
+        <div class="image-grid">
+          <div class="work-image square">
+            <span class="image-label">Image 05</span>
+          </div>
+          <div class="work-image square">
+            <span class="image-label">Image 06</span>
+          </div>
+        </div>
+
+        <!-- メイン画像（大） -->
+        <div class="work-image tall">
+          <span class="image-label">Image 07</span>
+        </div>
+
+      </div>
+
+      <!-- PREV / NEXT -->
+      <nav class="work-nav">
+        <div class="work-nav-item">
+          <span class="nav-arrow">←</span>
+          <span class="nav-label">Previous</span>
+          <span class="nav-title">前の作品タイトル</span>
+        </div>
+        <div class="work-nav-item">
+          <span class="nav-arrow">→</span>
+          <span class="nav-label">Next</span>
+          <span class="nav-title">次の作品タイトル</span>
+        </div>
+      </nav>
+    </div>
+
+  </div>
+
+</body>
+</html>
