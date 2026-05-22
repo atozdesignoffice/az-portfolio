@@ -38,7 +38,6 @@
 
     a { color: inherit; text-decoration: none; }
 
-    /* ─── HEADER ─── */
     .site-header {
       display: flex;
       align-items: center;
@@ -76,7 +75,6 @@
 
     .site-nav a:hover { color: var(--text); }
 
-    /* ─── HERO ─── */
     .hero {
       padding: 7rem 3rem 5rem;
       border-bottom: 1px solid var(--border);
@@ -117,7 +115,6 @@
       letter-spacing: 0.05em;
     }
 
-    /* ─── WORKS HEADER ─── */
     .works-header {
       padding: 1.25rem 3rem;
       display: flex;
@@ -133,10 +130,7 @@
       letter-spacing: 0.15em;
     }
 
-    .filter-tags {
-      display: flex;
-      gap: 0.6rem;
-    }
+    .filter-tags { display: flex; gap: 0.6rem; }
 
     .filter-tag {
       font-size: 0.6rem;
@@ -153,7 +147,6 @@
     .filter-tag:hover { color: var(--text); border-color: #666; }
     .filter-tag.active { color: var(--text); border-color: #777; }
 
-    /* ─── WORKS GRID ─── */
     .works-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -166,6 +159,7 @@
       cursor: pointer;
       overflow: hidden;
       transition: background 0.3s;
+      display: block;
     }
 
     .work-card:hover { background: var(--surface); }
@@ -176,7 +170,6 @@
       background: var(--surface2);
       position: relative;
       overflow: hidden;
-      transition: opacity 0.3s;
     }
 
     .work-thumb::before {
@@ -184,20 +177,8 @@
       position: absolute;
       inset: 0;
       background:
-        repeating-linear-gradient(
-          0deg,
-          transparent,
-          transparent 48px,
-          rgba(0,0,0,0.04) 48px,
-          rgba(0,0,0,0.04) 49px
-        ),
-        repeating-linear-gradient(
-          90deg,
-          transparent,
-          transparent 48px,
-          rgba(0,0,0,0.04) 48px,
-          rgba(0,0,0,0.04) 49px
-        );
+        repeating-linear-gradient(0deg, transparent, transparent 48px, rgba(0,0,0,0.04) 48px, rgba(0,0,0,0.04) 49px),
+        repeating-linear-gradient(90deg, transparent, transparent 48px, rgba(0,0,0,0.04) 48px, rgba(0,0,0,0.04) 49px);
       z-index: 0;
     }
 
@@ -216,9 +197,7 @@
       transition: color 0.3s;
     }
 
-    .work-card:hover .work-thumb-num {
-      color: rgba(0,0,0,0.12);
-    }
+    .work-card:hover .work-thumb-num { color: rgba(0,0,0,0.12); }
 
     .work-thumb-label {
       position: absolute;
@@ -232,7 +211,6 @@
       z-index: 2;
     }
 
-    /* Hover overlay */
     .work-thumb-overlay {
       position: absolute;
       inset: 0;
@@ -265,10 +243,7 @@
       letter-spacing: 0.12em;
     }
 
-    .work-tags-row {
-      display: flex;
-      gap: 0.4rem;
-    }
+    .work-tags-row { display: flex; gap: 0.4rem; }
 
     .work-tag {
       font-size: 0.6rem;
@@ -277,10 +252,7 @@
       color: var(--muted);
     }
 
-    .work-tag + .work-tag::before {
-      content: '/ ';
-      margin-right: 0.4rem;
-    }
+    .work-tag + .work-tag::before { content: '/ '; margin-right: 0.4rem; }
 
     .work-title {
       font-size: 0.95rem;
@@ -313,12 +285,8 @@
       transition: all 0.25s;
     }
 
-    .work-card:hover .work-arrow {
-      opacity: 1;
-      transform: translateX(0);
-    }
+    .work-card:hover .work-arrow { opacity: 1; transform: translateX(0); }
 
-    /* ─── PAGINATION ─── */
     .pagination {
       padding: 2.5rem 3rem;
       display: flex;
@@ -352,7 +320,6 @@
       padding: 0 0.25rem;
     }
 
-    /* ─── FOOTER ─── */
     .site-footer {
       border-top: 1px solid var(--border);
       padding: 3rem;
@@ -368,11 +335,7 @@
       color: var(--text);
     }
 
-    .footer-links {
-      display: flex;
-      gap: 2rem;
-      list-style: none;
-    }
+    .footer-links { display: flex; gap: 2rem; list-style: none; }
 
     .footer-links a {
       font-size: 0.65rem;
@@ -391,31 +354,20 @@
       letter-spacing: 0.08em;
     }
 
-    /* ─── RESPONSIVE ─── */
     @media (max-width: 900px) {
       .site-header { padding: 1.25rem 1.75rem; }
-      .hero {
-        grid-template-columns: 1fr;
-        gap: 2.5rem;
-        padding: 4rem 1.75rem 3rem;
-      }
+      .hero { grid-template-columns: 1fr; gap: 2.5rem; padding: 4rem 1.75rem 3rem; }
       .works-header { padding: 1.25rem 1.75rem; }
       .filter-tags { display: none; }
       .works-grid { grid-template-columns: 1fr; }
       .pagination { padding: 2rem 1.75rem; }
-      .site-footer {
-        flex-direction: column;
-        gap: 2rem;
-        padding: 2.5rem 1.75rem;
-        text-align: center;
-      }
+      .site-footer { flex-direction: column; gap: 2rem; padding: 2.5rem 1.75rem; text-align: center; }
       .footer-links { justify-content: center; }
     }
   </style>
 </head>
 <body>
 
-  <!-- HEADER -->
   <header class="site-header">
     <div class="site-logo">PORTFOLIO</div>
     <nav>
@@ -427,7 +379,6 @@
     </nav>
   </header>
 
-  <!-- HERO -->
   <section class="hero">
     <div>
       <p class="hero-eyebrow">Creative Works Archive</p>
@@ -444,7 +395,6 @@
     </div>
   </section>
 
-  <!-- WORKS HEADER -->
   <div class="works-header">
     <div class="works-count">WORKS — 012</div>
     <div class="filter-tags">
@@ -457,10 +407,8 @@
     </div>
   </div>
 
-  <!-- WORKS GRID -->
   <main class="works-grid" id="works"></main>
 
-  <!-- PAGINATION -->
   <div class="pagination">
     <div class="page-btn active">01</div>
     <div class="page-btn">02</div>
@@ -470,7 +418,6 @@
     <div class="page-btn">→</div>
   </div>
 
-  <!-- FOOTER -->
   <footer class="site-footer">
     <div class="footer-logo">PORTFOLIO</div>
     <ul class="footer-links">
@@ -501,8 +448,9 @@
     const grid = document.getElementById('works');
 
     works.forEach(work => {
-      const card = document.createElement('article');
+      const card = document.createElement('a');
       card.className = 'work-card';
+      card.href = `work-${work.num}.html`;
       card.innerHTML = `
         <div class="work-thumb">
           <span class="work-thumb-label">Sample Image</span>
@@ -526,7 +474,6 @@
       grid.appendChild(card);
     });
 
-    // Filter tags (visual only)
     document.querySelectorAll('.filter-tag').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.filter-tag').forEach(b => b.classList.remove('active'));
