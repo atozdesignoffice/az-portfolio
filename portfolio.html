@@ -165,11 +165,25 @@
     .work-card:hover { background: var(--surface); }
 
     .work-thumb {
+      
       width: 100%;
       aspect-ratio: 16/10;
       background: var(--surface2);
       position: relative;
       overflow: hidden;
+    }
+ 
+    .work-thumb-image {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    
+    .work-thumb.has-image::before {
+      display: none;
     }
 
     .work-thumb::before {
@@ -428,58 +442,177 @@
     <div class="footer-copy">© 2026 AtoZ DESIGN</div>
   </footer>
 
-  <script>
-    const works = [
-      { num: '001', tags: ['Graphic'], title: 'Particle Flow System', date: '2024.12' },
-      { num: '002', tags: ['JavaScript', 'WebGL'], title: 'Interactive 3D Sphere', date: '2024.11' },
-      { num: '003', tags: ['Graphic'], title: 'Brand Identity Design', date: '2024.11' },
-      { num: '004', tags: ['CSS', 'JavaScript'], title: 'Scroll Animation Gallery', date: '2024.10' },
-      { num: '005', tags: ['WebGL', 'GLSL'], title: 'Shader Experiment vol.1', date: '2024.10' },
-      { num: '006', tags: ['Motion'], title: 'Logo Animation Reel', date: '2024.09' },
-      { num: '007', tags: ['UI', 'JavaScript'], title: 'Custom Cursor Experience', date: '2024.09' },
-      { num: '008', tags: ['Graphic'], title: 'Typography Poster Series', date: '2024.08' },
-      { num: '009', tags: ['CSS'], title: 'Liquid Morphing Shapes', date: '2024.08' },
-      { num: '010', tags: ['p5.js'], title: 'Generative Art System', date: '2024.07' },
-      { num: '011', tags: ['JavaScript'], title: 'Audio Visualizer', date: '2024.07' },
-      { num: '012', tags: ['WebGL', 'GLSL'], title: 'Fragment Shader Study', date: '2024.06' },
-    ];
+  
+<script>
+  // 表示する作品ページの番号
+  // 最初は、既存の work-001.html だけで動作確認
+  const workPages = ['001'];
 
-    const grid = document.getElementById('works');
+  const grid = document.getElementById('works');
+
+  // HTMLから文字を取り出す
+  function getCleanText(element) {
+    if (!element) return '';
+
+    return element.innerHTML
+      .replace(/<br\s*\/?>/gi, ' ')
+      .replace(/<[^>]*>/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  // L2の作品ページから情報を読み取る
+  async function getWork(num) {
+    const pageUrl = `work-${num}.html`;
+
+    try {
+      const response = await fetch(pageUrl);
+
+      if (!response.ok) {
+        console.warn(`作品ページを読み込めませんでした: ${pageUrl}`);
+        return null;
+      }
+
+      const html = await response.text();
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+
+      const title = getCleanText(doc.querySelector('.work-title'));
+      const tags = Array.from(
+        doc.querySelectorAll('.tag-row .tag')
+      )
+        .map(tag => tag.textContent.trim())
+        .filter(Boolean);
+
+      const date = doc.querySelector('.meta-row .meta-value')
+        ?.textContent.trim() || '';
+
+      const imageElement = doc.querySelector('.content-area .work-image img');
+      const imageSrc = imageElement?.getAttribute('src') || '';
+
+      const image = imageSrc
+        ? new URL(imageSrc, new URL(pageUrl, window.location.href)).href
+        : '';
+
+      return {
+        num,
+        title: title || `Work ${num}`,
+        tags,
+        date,
+        image,
+        alt: imageElement?.getAttribute('alt') || title || ''
+      };
+    } catch (error) {
+      console.error(`作品情報の読み込みに失敗しました: ${pageUrl}`, error);
+      return null;
+    }
+  }
+
+  // 作品情報からカードを生成する
+  function createWorkCard(work) {
+    const card = document.createElement('a');
+    card.className = 'work-card';
+    card.href = `work-${work.num}.html`;
+
+    const thumb = document.createElement('div');
+    thumb.className = 'work-thumb';
+
+    if (work.image) {
+      const img = document.createElement('img');
+      img.className = 'work-thumb-image';
+      img.src = work.image;
+      img.alt = work.alt;
+      img.loading = 'lazy';
+
+      thumb.classList.add('has-image');
+      thumb.appendChild(img);
+    }
+
+    const label = document.createElement('span');
+    label.className = 'work-thumb-label';
+    label.textContent = work.image
+      ? (work.tags[0] || 'WORK')
+      : 'Sample Image';
+
+    const number = document.createElement('div');
+    number.className = 'work-thumb-num';
+    number.textContent = work.num;
+
+    const overlay = document.createElement('div');
+    overlay.className = 'work-thumb-overlay';
+
+    thumb.append(label, number, overlay);
+
+    const meta = document.createElement('div');
+    meta.className = 'work-meta';
+
+    const top = document.createElement('div');
+    top.className = 'work-top';
+
+    const workNumber = document.createElement('span');
+    workNumber.className = 'work-number';
+    workNumber.textContent = work.num;
+
+    const tagsRow = document.createElement('div');
+    tagsRow.className = 'work-tags-row';
+
+    work.tags.forEach(tagText => {
+      const tag = document.createElement('span');
+      tag.className = 'work-tag';
+      tag.textContent = tagText;
+      tagsRow.appendChild(tag);
+    });
+
+    top.append(workNumber, tagsRow);
+
+    const title = document.createElement('div');
+    title.className = 'work-title';
+    title.textContent = work.title;
+
+    const footer = document.createElement('div');
+    footer.className = 'work-footer-row';
+
+    const date = document.createElement('span');
+    date.className = 'work-date';
+    date.textContent = work.date;
+
+    const arrow = document.createElement('span');
+    arrow.className = 'work-arrow';
+    arrow.textContent = 'View →';
+
+    footer.append(date, arrow);
+    meta.append(top, title, footer);
+    card.append(thumb, meta);
+
+    return card;
+  }
+
+  // 登録したL2を読み込み、L1に表示する
+  async function renderWorks() {
+    const works = (await Promise.all(
+      workPages.map(num => getWork(num))
+    )).filter(Boolean);
+
+    grid.replaceChildren();
 
     works.forEach(work => {
-      const card = document.createElement('a');
-      card.className = 'work-card';
-      card.href = `work-${work.num}.html`;
-      card.innerHTML = `
-        <div class="work-thumb">
-          <span class="work-thumb-label">Sample Image</span>
-          <div class="work-thumb-num">${work.num}</div>
-          <div class="work-thumb-overlay"></div>
-        </div>
-        <div class="work-meta">
-          <div class="work-top">
-            <span class="work-number">${work.num}</span>
-            <div class="work-tags-row">
-              ${work.tags.map(t => `<span class="work-tag">${t}</span>`).join('')}
-            </div>
-          </div>
-          <div class="work-title">${work.title}</div>
-          <div class="work-footer-row">
-            <span class="work-date">${work.date}</span>
-            <span class="work-arrow">View →</span>
-          </div>
-        </div>
-      `;
-      grid.appendChild(card);
+      grid.appendChild(createWorkCard(work));
     });
+  }
 
-    document.querySelectorAll('.filter-tag').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.filter-tag').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
+  renderWorks();
+
+  // 既存のフィルターボタンの動作を維持
+  document.querySelectorAll('.filter-tag').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-tag').forEach(b => {
+        b.classList.remove('active');
       });
+
+      btn.classList.add('active');
     });
-  </script>
+  });
+</script>
+
 
 </body>
 </html>
