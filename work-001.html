@@ -61,11 +61,46 @@
       color: var(--text);
     }
 
-    .site-nav {
-      display: flex;
-      gap: 2.5rem;
-      list-style: none;
-    }
+
+.site-header nav {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  padding: 0 1.5rem;
+  background: rgba(250, 250, 248, 0.98);
+  border-bottom: 1px solid var(--border);
+}
+
+.site-header nav.is-open {
+  display: block;
+}
+
+.site-header .site-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  list-style: none;
+}
+
+.site-header .site-nav li {
+  width: fit-content;
+  min-width: 140px;
+}
+
+.site-header .site-nav li + li {
+  border-top: 1px solid var(--border);
+}
+
+.site-header .site-nav a {
+  display: block;
+  padding: 1rem 0;
+  color: #0d0d0d;
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+}
+
 
     .site-nav a {
       font-size: 0.68rem;
