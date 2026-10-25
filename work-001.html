@@ -266,16 +266,79 @@
       font-size: 0.8rem;
       color: var(--muted);
     }
+   
+/* ─── MENU TOGGLE ─── */
+    .menu-toggle {
+      display: none;
+    }
 
-    /* ─── RESPONSIVE ─── */
+/* ─── RESPONSIVE ─── */
     @media (max-width: 860px) {
-      .site-header { padding: 1.25rem 1.5rem; }
-
+      /* Header */
+      .site-header {
+        padding: 1.25rem 1.5rem;
+      }
+    
+      .menu-toggle {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        width: 44px;
+        padding: 6px 0;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+      }
+    
+      .menu-toggle span {
+        display: block;
+        width: 32px;
+        height: 1px;
+        background: var(--text);
+      }
+    
+      .menu-toggle::after {
+        content: "MENU";
+        font-size: 8px;
+        letter-spacing: 0.2em;
+        line-height: 1;
+        color: var(--text);
+      }
+    
+      .site-header nav {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        padding: 1.5rem;
+        background: rgba(250, 250, 248, 0.98);
+        border-bottom: 1px solid var(--border);
+      }
+    
+      .site-header nav.is-open {
+        display: block;
+      }
+    
+      .site-nav {
+        flex-direction: column;
+        gap: 1.5rem;
+        list-style: none;
+      }
+    
+      .site-nav a {
+        display: block;
+        font-size: 0.75rem;
+      }
+    
+      /* Page layout */
       .page-wrapper {
         grid-template-columns: 1fr;
         padding-top: 56px;
       }
-
+    
       .sidebar {
         position: static;
         height: auto;
@@ -283,23 +346,30 @@
         border-right: none;
         border-bottom: 1px solid var(--border);
       }
-
-      .content-area { padding: 0 0 4rem; }
-
-      .work-nav { grid-template-columns: 1fr; }
+    
+      .content-area {
+        padding: 0 0 4rem;
+      }
+    
+      .work-nav {
+        grid-template-columns: 1fr;
+      }
+    
       .work-nav-item + .work-nav-item {
         border-left: none;
         border-top: 1px solid var(--border);
         align-items: flex-start;
         text-align: left;
       }
-      
+    
+      /* Work images */
       .work-image img {
         width: 100%;
         height: auto;
         object-fit: contain;
         display: block;
       }
+    
       .work-image,
       .work-image.tall,
       .work-image.wide,
@@ -308,29 +378,37 @@
         height: auto;
         min-height: 0;
       }
-
-.work-image img {
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-  display: block;
-}
     }
   </style>
 </head>
 <body>
 
   <!-- HEADER -->
-  <header class="site-header">
-    <a href="portfolio.html" class="site-logo">PORTFOLIO</a>
-    <nav>
-      <ul class="site-nav">
-        <li><a href="#">About</a></li>
-        <li><a href="portfolio.html">Works</a></li>
-        <li><a href="#">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
+
+<header class="site-header">
+  <a href="portfolio.html" class="site-logo">PORTFOLIO</a>
+
+  <button
+    class="menu-toggle"
+    type="button"
+    aria-label="メニューを開く"
+    aria-expanded="false"
+    aria-controls="site-navigation"
+  >
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <nav id="site-navigation">
+    <ul class="site-nav">
+      <li><a href="#">About</a></li>
+      <li><a href="portfolio.html">Works</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
 
   <!-- MAIN -->
   <div class="page-wrapper">
@@ -437,6 +515,31 @@
     </div>
 
   </div>
+
+<script>
+  const menuToggle = document.querySelector('.menu-toggle');
+  const siteNavigation = document.querySelector('#site-navigation');
+
+  if (menuToggle && siteNavigation) {
+    menuToggle.addEventListener('click', () => {
+      const isOpen = siteNavigation.classList.toggle('is-open');
+
+      menuToggle.setAttribute('aria-expanded', String(isOpen));
+      menuToggle.setAttribute(
+        'aria-label',
+        isOpen ? 'メニューを閉じる' : 'メニューを開く'
+      );
+    });
+
+    siteNavigation.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        siteNavigation.classList.remove('is-open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+        menuToggle.setAttribute('aria-label', 'メニューを開く');
+      });
+    });
+  }
+</script>
 
 </body>
 </html>
