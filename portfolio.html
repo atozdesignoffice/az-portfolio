@@ -407,6 +407,73 @@
       color: var(--text);
     }
 
+    /* スマホ版レイアウト調整 */
+    @media (max-width: 600px) {
+      .site-header {
+        padding: 1.4rem 1.25rem;
+      }
+    
+      .hero {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding: 3rem 1.25rem;
+      }
+    
+      .hero-title {
+        font-size: clamp(3.5rem, 15vw, 5rem);
+      }
+    
+      .works-header {
+        padding: 1.25rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+    
+      .filter-tags {
+        flex-wrap: wrap;
+        max-width: 100%;
+        gap: 0.5rem;
+      }
+    
+      .filter-tag {
+        padding: 0.3rem 0.65rem;
+      }
+    
+      .works-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    
+      .work-meta {
+        padding: 1.25rem;
+      }
+    
+      .work-tags-row {
+        flex-wrap: wrap;
+      }
+    
+      .pagination {
+        padding: 2rem 1.25rem;
+        flex-wrap: wrap;
+      }
+    
+      .site-footer {
+        padding: 2rem 1.25rem;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+      }
+    
+      .footer-links {
+        flex-wrap: wrap;
+        gap: 1rem;
+        max-width: 100%;
+      }
+    
+      .footer-copy {
+        max-width: 100%;
+        overflow-wrap: anywhere;
+      }
+}
+
     }
   </style>
 </head>
