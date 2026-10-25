@@ -293,12 +293,28 @@
         align-items: flex-start;
         text-align: left;
       }
+      
       .work-image img {
         width: 100%;
         height: auto;
         object-fit: contain;
         display: block;
       }
+      .work-image,
+      .work-image.tall,
+      .work-image.wide,
+      .work-image.square {
+        aspect-ratio: auto;
+        height: auto;
+        min-height: 0;
+      }
+
+.work-image img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
     }
   </style>
 </head>
