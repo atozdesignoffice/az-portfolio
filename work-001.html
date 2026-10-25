@@ -195,7 +195,6 @@
 
     .work-image {
       width: 100%;
-      background: var(--surface2);
       position: relative;
       overflow: hidden;
     }
@@ -204,27 +203,6 @@
     .work-image.wide { aspect-ratio: 16/7; }
     .work-image.square { aspect-ratio: 1/1; }
 
-    /* Subtle grid pattern placeholder */
-    .work-image::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        repeating-linear-gradient(
-          0deg,
-          transparent,
-          transparent 48px,
-          rgba(0,0,0,0.04) 48px,
-          rgba(0,0,0,0.04) 49px
-        ),
-        repeating-linear-gradient(
-          90deg,
-          transparent,
-          transparent 48px,
-          rgba(0,0,0,0.04) 48px,
-          rgba(0,0,0,0.04) 49px
-        );
-    }
 
     .image-label {
       position: absolute;
