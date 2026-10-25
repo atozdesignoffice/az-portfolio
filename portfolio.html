@@ -369,14 +369,35 @@
     }
 
     @media (max-width: 900px) {
-      .site-header { padding: 1.25rem 1.75rem; }
-      .hero { grid-template-columns: 1fr; gap: 2.5rem; padding: 4rem 1.75rem 3rem; }
-      .works-header { padding: 1.25rem 1.75rem; }
-      .filter-tags { display: none; }
-      .works-grid { grid-template-columns: 1fr; }
-      .pagination { padding: 2rem 1.75rem; }
-      .site-footer { flex-direction: column; gap: 2rem; padding: 2.5rem 1.75rem; text-align: center; }
-      .footer-links { justify-content: center; }
+
+    .menu-toggle {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 44px;
+      padding: 6px 0;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+    }
+    
+    .menu-toggle span {
+      display: block;
+      width: px;
+      height: 1px;
+      background: var(--text);
+    }
+
+    .menu-toggle::after {
+      content: "MENU";
+      font-size: 8px;
+      letter-spacing: 0.20em;
+      line-height: 1;
+      color: var(--text);
+}
+
     }
   </style>
 </head>
@@ -384,6 +405,12 @@
 
   <header class="site-header">
     <div class="site-logo">PORTFOLIO</div>
+    <button class="menu-toggle" type="button" aria-label="メニューを開く" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    
     <nav>
       <ul class="site-nav">
         <li><a href="#">About</a></li>
