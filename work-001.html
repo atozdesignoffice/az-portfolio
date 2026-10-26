@@ -221,10 +221,13 @@
 
     /* ─── RIGHT CONTENT ─── */
     .content-area {
+      width: 100%;
+      max-width: 1028px;
+      margin: 0 auto;
       padding: 3rem 3rem 6rem;
       display: flex;
       flex-direction: column;
-      gap: 1px;
+      gap: 28px;
     }
 
     .work-image {
@@ -252,9 +255,8 @@
     /* 2カラム画像グリッド */
     .image-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1px;
-      background: var(--border);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 28px;
     }
 
     /* ─── PREV / NEXT ─── */
