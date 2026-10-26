@@ -408,7 +408,12 @@
         align-items: flex-start;
         text-align: left;
       }
-    
+
+      /* スマホでは2カラムを1カラムに変更 */
+      .image-grid {
+        grid-template-columns: 1fr;
+      }
+
       /* Work images */
       .work-image img {
         width: 100%;
