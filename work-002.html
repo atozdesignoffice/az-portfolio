@@ -588,6 +588,49 @@
       });
     });
   }
+
+      // PREV / NEXT 自動設定
+    async function setupWorkNavigation() {
+      const apiUrl =
+        'https://api.github.com/repos/atozdesignoffice/az-portfolio/contents/';
+  
+      const currentFile = location.pathname.split('/').pop();
+      const currentMatch = currentFile.match(/^work-(\d+)\.html$/);
+  
+      if (!currentMatch) return;
+  
+      try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) throw new Error('GitHub API error');
+  
+        const files = await response.json();
+  
+        const workPages = files
+          .map(file => file.name)
+          .filter(name => /^work-\d+\.html$/.test(name))
+          .sort();
+  
+        const currentIndex = workPages.indexOf(currentFile);
+  
+        const prevLink = document.getElementById('prev-work');
+        const nextLink = document.getElementById('next-work');
+  
+        if (currentIndex > 0) {
+          prevLink.href = workPages[currentIndex - 1];
+          prevLink.hidden = false;
+        }
+  
+        if (currentIndex < workPages.length - 1) {
+          nextLink.href = workPages[currentIndex + 1];
+          nextLink.hidden = false;
+        }
+  
+      } catch (error) {
+        console.error('作品ナビゲーションを取得できませんでした:', error);
+      }
+    }
+  
+    setupWorkNavigation();
 </script>
 
 </body>
