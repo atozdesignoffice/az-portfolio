@@ -786,15 +786,23 @@ async function getWorkPages() {
 
   // 登録したL2を読み込み、L1に表示する
   async function renderWorks() {
+    const workPages = await getWorkPages();
+  
     const works = (await Promise.all(
       workPages.map(num => getWork(num))
     )).filter(Boolean);
-
+  
     grid.replaceChildren();
-
+  
     works.forEach(work => {
       grid.appendChild(createWorkCard(work));
     });
+  
+    const count = document.querySelector('.works-count');
+  
+    if (count) {
+      count.textContent = `WORKS — ${String(works.length).padStart(3, '0')}`;
+    }
   }
 
   renderWorks();
