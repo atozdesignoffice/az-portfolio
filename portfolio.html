@@ -620,9 +620,31 @@
   
 
 <script>
-  // 表示する作品ページの番号
-  // 最初は、既存の work-001.html だけで動作確認
-  const workPages = ['001'];
+// GitHubから作品ページの番号を自動取得
+async function getWorkPages() {
+  const apiUrl =
+    'https://api.github.com/repos/atozdesignoffice/az-portfolio/contents/';
+
+  try {
+    const response = await fetch(apiUrl);
+
+    if (!response.ok) {
+      throw new Error(`GitHub API error: ${response.status}`);
+    }
+
+    const files = await response.json();
+
+    return files
+      .map(file => file.name)
+      .filter(name => /^work-\d+\.html$/.test(name))
+      .map(name => name.match(/^work-(\d+)\.html$/)[1])
+      .sort((a, b) => Number(a) - Number(b));
+
+  } catch (error) {
+    console.error('作品ページ一覧を取得できませんでした:', error);
+    return [];
+  }
+}
 
   const grid = document.getElementById('works');
 
