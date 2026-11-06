@@ -149,6 +149,8 @@
       border-radius: 999px;
       cursor: pointer;
       transition: all 0.2s;
+      font-family: var(--font-body);
+      background: transparent;
     }
 
     .filter-tag:hover { color: var(--text); border-color: #666; }
@@ -611,14 +613,9 @@
 
   <div class="works-header">
     <div class="works-count">WORKS — 012</div>
-    <div class="filter-tags">
-      <div class="filter-tag active">All</div>
-      <div class="filter-tag">Graphic</div>
-      <div class="filter-tag">Web</div>
-      <div class="filter-tag">Graphic</div>
-      <div class="filter-tag">Typography</div>
-      <div class="filter-tag">Other</div>
-    </div>
+  <div class="filter-tags">
+    <button class="filter-tag active" type="button" data-filter="All">All</button>
+  </div>
   </div>
 
   <main class="works-grid" id="works"></main>
@@ -673,7 +670,9 @@ async function getWorkPages() {
 }
 
   const grid = document.getElementById('works');
-
+  let allWorks = [];
+  let activeFilter = 'All';
+  
   // HTMLから文字を取り出す
   function getCleanText(element) {
     if (!element) return '';
@@ -810,66 +809,96 @@ async function getWorkPages() {
     return card;
   }
 
-  // 登録したL2を読み込み、L1に表示する
-  async function renderWorks() {
-    const workPages = await getWorkPages();
-  
-    const works = (await Promise.all(
-      workPages.map(num => getWork(num))
-    )).filter(Boolean);
-  
-    grid.replaceChildren();
-  
-    works.forEach(work => {
-      grid.appendChild(createWorkCard(work));
-    });
-  
-    const count = document.querySelector('.works-count');
-  
-    if (count) {
-      count.textContent = `WORKS — ${String(works.length).padStart(3, '0')}`;
+// L2のタグからカテゴリボタンを自動生成
+function renderFilterButtons(works) {
+  const container = document.querySelector('.filter-tags');
+
+  if (!container) return;
+
+  // 全作品からタグを集め、重複を除去
+  const categories = [
+    ...new Set(works.flatMap(work => work.tags))
+  ].sort((a, b) => a.localeCompare(b, 'ja'));
+
+  container.replaceChildren();
+
+  // Allを先頭に配置
+  const filters = ['All', ...categories];
+
+  filters.forEach(category => {
+    const button = document.createElement('button');
+
+    button.className = 'filter-tag';
+    button.type = 'button';
+    button.textContent = category;
+    button.dataset.filter = category;
+
+    if (category === activeFilter) {
+      button.classList.add('active');
     }
-  }
 
-  renderWorks();
+    button.addEventListener('click', () => {
+      activeFilter = category;
 
-  // 既存のフィルターボタンの動作を維持
-  document.querySelectorAll('.filter-tag').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.filter-tag').forEach(b => {
-        b.classList.remove('active');
+      container.querySelectorAll('.filter-tag').forEach(btn => {
+        btn.classList.toggle(
+          'active',
+          btn.dataset.filter === activeFilter
+        );
       });
 
-      btn.classList.add('active');
+      renderFilteredWorks();
     });
+
+    container.appendChild(button);
   });
-</script>
+}
 
-<script>
-  // ハンバーガーメニューの開閉
-  const menuToggle = document.querySelector('.menu-toggle');
-  const siteNavigation = document.querySelector('#site-navigation');
 
-  if (menuToggle && siteNavigation) {
-    menuToggle.addEventListener('click', () => {
-      const isOpen = siteNavigation.classList.toggle('is-open');
-
-      menuToggle.setAttribute('aria-expanded', String(isOpen));
-      menuToggle.setAttribute(
-        'aria-label',
-        isOpen ? 'メニューを閉じる' : 'メニューを開く'
+// 選択したカテゴリに合わせて作品を表示
+function renderFilteredWorks() {
+  const filteredWorks = activeFilter === 'All'
+    ? allWorks
+    : allWorks.filter(work =>
+        work.tags.includes(activeFilter)
       );
-    });
 
-    // メニュー内のリンクを押したら閉じる
-    siteNavigation.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        siteNavigation.classList.remove('is-open');
-        menuToggle.setAttribute('aria-expanded', 'false');
-        menuToggle.setAttribute('aria-label', 'メニューを開く');
-      });
-    });
+  grid.replaceChildren();
+
+  filteredWorks.forEach(work => {
+    grid.appendChild(createWorkCard(work));
+  });
+
+  // 表示中の作品数を更新
+  const count = document.querySelector('.works-count');
+
+  if (count) {
+    count.textContent =
+      `WORKS — ${String(filteredWorks.length).padStart(3, '0')}`;
   }
+}
+
+
+// 登録したL2を読み込み、L1に表示する
+async function renderWorks() {
+  const workPages = await getWorkPages();
+
+  const works = (await Promise.all(
+    workPages.map(num => getWork(num))
+  )).filter(Boolean);
+
+  allWorks = works;
+
+  // L2のタグからカテゴリを生成
+  renderFilterButtons(allWorks);
+
+  // 初期表示
+  renderFilteredWorks();
+}
+
+// 初回読み込み
+renderWorks();
+
 </script>
 
 </body>
